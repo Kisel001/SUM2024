@@ -38,7 +38,7 @@ export class _mat4 {
         [0, 0, 1, 0],
         [0, 0, 0, 1],
       ];
-    else if (typeof a00 == Object && a00.length == 16) this.a = new a00();
+    else if (typeof a00 == "object" && a00.a.length == 4) this.a = a00.a;
     else
       this.a = [
         [a00, a01, a02, a03],
@@ -52,7 +52,7 @@ export class _mat4 {
   mul(m) {
     return mat4(
       this.a[0][0] * m.a[0][0] +
-        this[0][1] * m.a[1][0] +
+        this.a[0][1] * m.a[1][0] +
         this.a[0][2] * m.a[2][0] +
         this.a[0][3] * m.a[3][0],
       this.a[0][0] * m.a[0][1] +
@@ -269,211 +269,211 @@ export class _mat4 {
 
     /* build adjoint matrix */
     r.a[0][0] =
-      +MatrDeterm3x3(
-        M.A[1][1],
-        M.A[1][2],
-        M.A[1][3],
-        M.A[2][1],
-        M.A[2][2],
-        M.A[2][3],
-        M.A[3][1],
-        M.A[3][2],
-        M.A[3][3]
+      +mat3Determ(
+        this.a[1][1],
+        this.a[1][2],
+        this.a[1][3],
+        this.a[2][1],
+        this.a[2][2],
+        this.a[2][3],
+        this.a[3][1],
+        this.a[3][2],
+        this.a[3][3]
       ) / det;
 
     r.a[1][0] =
-      -MatrDeterm3x3(
-        M.A[1][0],
-        M.A[1][2],
-        M.A[1][3],
-        M.A[2][0],
-        M.A[2][2],
-        M.A[2][3],
-        M.A[3][0],
-        M.A[3][2],
-        M.A[3][3]
+      -mat3Determ(
+        this.a[1][0],
+        this.a[1][2],
+        this.a[1][3],
+        this.a[2][0],
+        this.a[2][2],
+        this.a[2][3],
+        this.a[3][0],
+        this.a[3][2],
+        this.a[3][3]
       ) / det;
 
     r.a[2][0] =
-      +MatrDeterm3x3(
-        M.A[1][0],
-        M.A[1][1],
-        M.A[1][3],
-        M.A[2][0],
-        M.A[2][1],
-        M.A[2][3],
-        M.A[3][0],
-        M.A[3][1],
-        M.A[3][3]
+      +mat3Determ(
+        this.a[1][0],
+        this.a[1][1],
+        this.a[1][3],
+        this.a[2][0],
+        this.a[2][1],
+        this.a[2][3],
+        this.a[3][0],
+        this.a[3][1],
+        this.a[3][3]
       ) / det;
 
     r.a[3][0] =
-      -MatrDeterm3x3(
-        M.A[1][0],
-        M.A[1][1],
-        M.A[1][2],
-        M.A[2][0],
-        M.A[2][1],
-        M.A[2][2],
-        M.A[3][0],
-        M.A[3][1],
-        M.A[3][2]
+      -mat3Determ(
+        this.a[1][0],
+        this.a[1][1],
+        this.a[1][2],
+        this.a[2][0],
+        this.a[2][1],
+        this.a[2][2],
+        this.a[3][0],
+        this.a[3][1],
+        this.a[3][2]
       ) / det;
 
     r.a[0][1] =
-      -MatrDeterm3x3(
-        M.A[0][1],
-        M.A[0][2],
-        M.A[0][3],
-        M.A[2][1],
-        M.A[2][2],
-        M.A[2][3],
-        M.A[3][1],
-        M.A[3][2],
-        M.A[3][3]
+      -mat3Determ(
+        this.a[0][1],
+        this.a[0][2],
+        this.a[0][3],
+        this.a[2][1],
+        this.a[2][2],
+        this.a[2][3],
+        this.a[3][1],
+        this.a[3][2],
+        this.a[3][3]
       ) / det;
 
     r.a[1][1] =
-      +MatrDeterm3x3(
-        M.A[0][0],
-        M.A[0][2],
-        M.A[0][3],
-        M.A[2][0],
-        M.A[2][2],
-        M.A[2][3],
-        M.A[3][0],
-        M.A[3][2],
-        M.A[3][3]
+      +mat3Determ(
+        this.a[0][0],
+        this.a[0][2],
+        this.a[0][3],
+        this.a[2][0],
+        this.a[2][2],
+        this.a[2][3],
+        this.a[3][0],
+        this.a[3][2],
+        this.a[3][3]
       ) / det;
 
     r.a[2][1] =
-      -MatrDeterm3x3(
-        M.A[0][0],
-        M.A[0][1],
-        M.A[0][3],
-        M.A[2][0],
-        M.A[2][1],
-        M.A[2][3],
-        M.A[3][0],
-        M.A[3][1],
-        M.A[3][3]
+      -mat3Determ(
+        this.a[0][0],
+        this.a[0][1],
+        this.a[0][3],
+        this.a[2][0],
+        this.a[2][1],
+        this.a[2][3],
+        this.a[3][0],
+        this.a[3][1],
+        this.a[3][3]
       ) / det;
 
     r.a[3][1] =
-      +MatrDeterm3x3(
-        M.A[0][0],
-        M.A[0][1],
-        M.A[0][2],
-        M.A[2][0],
-        M.A[2][1],
-        M.A[2][2],
-        M.A[3][0],
-        M.A[3][1],
-        M.A[3][2]
+      +mat3Determ(
+        this.a[0][0],
+        this.a[0][1],
+        this.a[0][2],
+        this.a[2][0],
+        this.a[2][1],
+        this.a[2][2],
+        this.a[3][0],
+        this.a[3][1],
+        this.a[3][2]
       ) / det;
 
     r.a[0][2] =
-      +MatrDeterm3x3(
-        M.A[0][1],
-        M.A[0][2],
-        M.A[0][3],
-        M.A[1][1],
-        M.A[1][2],
-        M.A[1][3],
-        M.A[3][1],
-        M.A[3][2],
-        M.A[3][3]
+      +mat3Determ(
+        this.a[0][1],
+        this.a[0][2],
+        this.a[0][3],
+        this.a[1][1],
+        this.a[1][2],
+        this.a[1][3],
+        this.a[3][1],
+        this.a[3][2],
+        this.a[3][3]
       ) / det;
 
     r.a[1][2] =
-      -MatrDeterm3x3(
-        M.A[0][0],
-        M.A[0][2],
-        M.A[0][3],
-        M.A[1][0],
-        M.A[1][2],
-        M.A[1][3],
-        M.A[3][0],
-        M.A[3][2],
-        M.A[3][3]
+      -mat3Determ(
+        this.a[0][0],
+        this.a[0][2],
+        this.a[0][3],
+        this.a[1][0],
+        this.a[1][2],
+        this.a[1][3],
+        this.a[3][0],
+        this.a[3][2],
+        this.a[3][3]
       ) / det;
 
     r.a[2][2] =
-      +MatrDeterm3x3(
-        M.A[0][0],
-        M.A[0][1],
-        M.A[0][3],
-        M.A[1][0],
-        M.A[1][1],
-        M.A[1][3],
-        M.A[3][0],
-        M.A[3][1],
-        M.A[3][3]
+      +mat3Determ(
+        this.a[0][0],
+        this.a[0][1],
+        this.a[0][3],
+        this.a[1][0],
+        this.a[1][1],
+        this.a[1][3],
+        this.a[3][0],
+        this.a[3][1],
+        this.a[3][3]
       ) / det;
 
     r.a[3][2] =
-      -MatrDeterm3x3(
-        M.A[0][0],
-        M.A[0][1],
-        M.A[0][2],
-        M.A[1][0],
-        M.A[1][1],
-        M.A[1][2],
-        M.A[3][0],
-        M.A[3][1],
-        M.A[3][2]
+      -mat3Determ(
+        this.a[0][0],
+        this.a[0][1],
+        this.a[0][2],
+        this.a[1][0],
+        this.a[1][1],
+        this.a[1][2],
+        this.a[3][0],
+        this.a[3][1],
+        this.a[3][2]
       ) / det;
 
     r.a[0][3] =
-      -MatrDeterm3x3(
-        M.A[0][1],
-        M.A[0][2],
-        M.A[0][3],
-        M.A[1][1],
-        M.A[1][2],
-        M.A[1][3],
-        M.A[2][1],
-        M.A[2][2],
-        M.A[2][3]
+      -mat3Determ(
+        this.a[0][1],
+        this.a[0][2],
+        this.a[0][3],
+        this.a[1][1],
+        this.a[1][2],
+        this.a[1][3],
+        this.a[2][1],
+        this.a[2][2],
+        this.a[2][3]
       ) / det;
 
     r.a[1][3] =
-      +MatrDeterm3x3(
-        M.A[0][0],
-        M.A[0][2],
-        M.A[0][3],
-        M.A[1][0],
-        M.A[1][2],
-        M.A[1][3],
-        M.A[2][0],
-        M.A[2][2],
-        M.A[2][3]
+      +mat3Determ(
+        this.a[0][0],
+        this.a[0][2],
+        this.a[0][3],
+        this.a[1][0],
+        this.a[1][2],
+        this.a[1][3],
+        this.a[2][0],
+        this.a[2][2],
+        this.a[2][3]
       ) / det;
 
     r.a[2][3] =
-      -MatrDeterm3x3(
-        M.A[0][0],
-        M.A[0][1],
-        M.A[0][3],
-        M.A[1][0],
-        M.A[1][1],
-        M.A[1][3],
-        M.A[2][0],
-        M.A[2][1],
-        M.A[2][3]
+      -mat3Determ(
+        this.a[0][0],
+        this.a[0][1],
+        this.a[0][3],
+        this.a[1][0],
+        this.a[1][1],
+        this.a[1][3],
+        this.a[2][0],
+        this.a[2][1],
+        this.a[2][3]
       ) / det;
 
     r.a[3][3] =
-      +MatrDeterm3x3(
-        M.A[0][0],
-        M.A[0][1],
-        M.A[0][2],
-        M.A[1][0],
-        M.A[1][1],
-        M.A[1][2],
-        M.A[2][0],
-        M.A[2][1],
-        M.A[2][2]
+      +mat3Determ(
+        this.a[0][0],
+        this.a[0][1],
+        this.a[0][2],
+        this.a[1][0],
+        this.a[1][1],
+        this.a[1][2],
+        this.a[2][0],
+        this.a[2][1],
+        this.a[2][2]
       ) / det;
 
     return r;
@@ -522,6 +522,53 @@ export class _mat4 {
       1
     );
   } // End of 'ortho' function
+
+  // Set view matrix function
+  view(Loc, At, Up1) {
+    const Dir = vec3(At).sub(Loc).getNormal();
+    const Right = vec3(Dir).cross(Up1).getNormal();
+    const Up = vec3(Right).cross(Dir).getNormal();
+
+    this.a = mat4(
+      Right.x,
+      Up.x,
+      -Dir.x,
+      0,
+      Right.y,
+      Up.y,
+      -Dir.y,
+      0,
+      Right.z,
+      Up.z,
+      -Dir.z,
+      0,
+      -Loc.dot(Right),
+      -Loc.dot(Up),
+      -Loc.dot(Dir),
+      1
+    ).a;
+  } // End of 'view' function
+
+  toArray() {
+    return [
+      this.a[0][0],
+      this.a[0][1],
+      this.a[0][2],
+      this.a[0][3],
+      this.a[1][0],
+      this.a[2][1],
+      this.a[1][2],
+      this.a[2][3],
+      this.a[2][0],
+      this.a[2][1],
+      this.a[2][2],
+      this.a[2][3],
+      this.a[3][0],
+      this.a[3][1],
+      this.a[3][2],
+      this.a[3][3],
+    ];
+  }
 }
 
 // Get matrix function.
@@ -543,7 +590,24 @@ export function mat4(
   a32,
   a33
 ) {
-  return new _mat4(arguments);
+  return new _mat4(
+    a00,
+    a01,
+    a02,
+    a03,
+    a10,
+    a11,
+    a12,
+    a13,
+    a20,
+    a21,
+    a22,
+    a23,
+    a30,
+    a31,
+    a32,
+    a33
+  );
 } // End of 'mat4' function.
 
 // mat3 determination function

@@ -14,7 +14,7 @@ export class _vec3 {
       this.x = 0;
       this.y = 0;
       this.z = 0;
-    } else if (typeof x == Object) {
+    } else if (typeof x == "object") {
       if (x.x !== undefined) {
         this.x = x.x;
         this.y = x.y;
@@ -58,7 +58,7 @@ export class _vec3 {
 
   // Min 2 vectors
   sub(v) {
-    return this.Vec3AddVec3(this.getNeg(v));
+    return this.add(v.getNeg());
   } // End of 'sub' function
 
   // Dot 2 vectors
@@ -68,11 +68,20 @@ export class _vec3 {
     return this.x * v.x + this.y * v.y + this.z * v.z;
   } // End of 'dot' function
 
+  // Cross 2 vectors
+  cross(v) {
+    return vec3(
+      this.y * v.z - this.z * v.y,
+      this.z * v.x - this.x * v.z,
+      this.x * v.y - this.y * v.x
+    );
+  } // End of 'cross' function
+
   // Get len of vector
   len() {
-    return this.dot();
+    return Math.sqrt(this.dot());
   } // End of 'len' function
-
+  /*
   // Sub 2 vectors
   sub(v) {
     return vec3(
@@ -81,7 +90,7 @@ export class _vec3 {
       this.x * v.y - this.y * v.x
     );
   } // End of 'sub' function
-
+*/
   // Vec mul num
   mul(n) {
     return vec3(this.x * n, this.y * n, this.z * n);
@@ -100,14 +109,14 @@ export class _vec3 {
       this.y /= l;
       this.z /= l;
     }
-  }
+  } // End of 'setNormal' function
 
   // Get vec nomrmalize
   getNormal() {
-    let l = this.len;
+    let l = this.len();
     if (l == 0 || l == 1) return vec3(this);
     return this.div(l);
-  }
+  } // End of 'getNormal' function
 
   // Vector 3D mul Matr function
   mulMatr(v, m) {
@@ -132,6 +141,11 @@ export class _vec3 {
         w
     );
   } // End of 'mulMatr' function
+
+  // Convert vector to array
+  toArray() {
+    return new [this.x, this.y, this.z]();
+  } // End of 'toArray' function
 } // End of '_vec3' class
 
 // Create vec3 function.
