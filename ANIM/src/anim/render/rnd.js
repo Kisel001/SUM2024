@@ -64,6 +64,7 @@ export class Render {
     this.matrView = ipgl.mth.mat4();
     this.matrView.view(Loc, At, Up);
     this.matrVP = this.matrView.mul(this.matrProj);
+    //this.matrVP = this.matrProj.mul(this.matrView);
 
     this.camRight = ipgl.mth.vec3(
       this.matrView.a[0][0],

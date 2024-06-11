@@ -61,7 +61,7 @@ export class Prim {
         gl.vertexAttribPointer(norLoc, 3, gl.FLOAT, false, 24, 12);
         gl.enableVertexAttribArray(norLoc);
       }
-      this.noofV = vertices.length;
+      this.noofV = vertices.length / 6;
     } else {
       this.noofV = 0;
       this.VBuf = 0;
@@ -93,11 +93,11 @@ export class Prim {
   // Prim draw function
   primDraw(rnd, matr, shd) {
     let gl = rnd.gl;
-    const progId = shd;
+    const progId = shd.prg;
     let loc;
     const glPrimType = this.type == "Trimesh" ? gl.TRIANGLES : gl.POINTS;
     const w = ipgl.mth.mat4(matr),
-      wnormal = ipgl.mth.mat4(),
+      wnormal = w.getInverse(),
       wvp = w.mul(rnd.matrVP);
 
     wnormal.transponse(matr.getInverse());
@@ -105,12 +105,21 @@ export class Prim {
     // send data to shader
     gl.useProgram(progId);
 
-    loc = gl.getUniformLocation(progId, "MatrW");
-    gl.uniformMatrix4fv(loc, false, new Float32Array(w.toArray()));
-    loc = gl.getUniformLocation(progId, "MatrWInv");
-    gl.uniformMatrix4fv(loc, false, new Float32Array(wnormal.toArray()));
-    loc = gl.getUniformLocation(progId, "MatrWVP");
-    gl.uniformMatrix4fv(loc, true, new Float32Array(wvp.toArray()));
+    gl.uniformMatrix4fv(
+      shd.MatrWVPLoc,
+      false,
+      new Float32Array([].concat(...wvp.a))
+    ); // wvp.toArray()));
+    gl.uniformMatrix4fv(
+      shd.MatrWInvLoc,
+      false,
+      new Float32Array([].concat(...wnormal.a))
+    );
+    gl.uniformMatrix4fv(
+      shd.MatrWLoc,
+      false,
+      new Float32Array([].concat(...w.a))
+    );
 
     // render
     gl.bindVertexArray(this.VA);
@@ -125,7 +134,7 @@ export class Prim {
 
     gl.bindVertexArray(null);
     gl.useProgram(null);
-  } // End of 'rimDraw' function
+  } //S End of 'rimDraw' function
 
   // Evalutation bound box function
   evalBB() {
@@ -153,11 +162,11 @@ export class Prim {
         p2 = ipgl.mth.vec3(V[6 * n2], V[6 * n2 + 1], V[6 * n2 + 2]),
         N = p1.sub(p0).cross(p2.sub(p0)).getNormal();
 
-      const nn0 = N.add(
-          ipgl.mth.vec3(V[6 * n0 + 3], V[6 * n0 + 4], V[6 * n0 + 5])
-        ),
-        nn1 = N.add(ipgl.mth.vec3(V[6 * n1 + 3], V[6 * n1 + 4], V[6 * n2 + 5])),
-        nn2 = N.add(ipgl.mth.vec3(V[6 * n2 + 3], V[6 * n2 + 4], V[6 * n2 + 5]));
+      const nn0 = N, //.add(
+        //   ipgl.mth.vec3(V[6 * n0 + 3], V[6 * n0 + 4], V[6 * n0 + 5])
+        // ),
+        nn1 = N, //.add(ipgl.mth.vec3(V[6 * n1 + 3], V[6 * n1 + 4], V[6 * n2 + 5])),
+        nn2 = N; //.add(ipgl.mth.vec3(V[6 * n2 + 3], V[6 * n2 + 4], V[6 * n2 + 5]));
 
       // n0
       V[6 * n0 + 3] = nn0.x;

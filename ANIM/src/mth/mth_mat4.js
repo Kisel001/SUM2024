@@ -161,21 +161,21 @@ export class _mat4 {
   // Matr rotate function
   rotate(a, r) {
     let A = D2R(a),
-      s = sin(A),
-      c = cos(A);
+      s = Math.sin(A),
+      c = Math.cos(A);
     let V = r.getNormal();
     this.a = mat4(
-      c + V.X * V.X * (1 - c),
-      V.X * V.Y * (1 - c) + V.Z * s,
-      V.X * V.Z * (1 - c) - V.Y * s,
+      c + V.x * V.x * (1 - c),
+      V.x * V.y * (1 - c) + V.z * s,
+      V.x * V.z * (1 - c) - V.y * s,
       0,
-      V.Y * V.X * (1 - c) - V.Z * s,
-      c + V.Y * V.Y * (1 - c),
-      V.Y * V.Z * (1 - c) + V.X * s,
+      V.y * V.x * (1 - c) - V.z * s,
+      c + V.y * V.y * (1 - c),
+      V.y * V.z * (1 - c) + V.x * s,
       0,
-      V.Z * V.X * (1 - c) + V.Y * s,
-      V.Z * V.Y * (1 - c) - V.X * s,
-      c + V.Z * V.Z * (1 - c),
+      V.z * V.x * (1 - c) + V.y * s,
+      V.z * V.y * (1 - c) - V.x * s,
+      c + V.z * V.z * (1 - c),
       0,
       0,
       0,
@@ -544,7 +544,7 @@ export class _mat4 {
       0,
       -Loc.dot(Right),
       -Loc.dot(Up),
-      -Loc.dot(Dir),
+      Loc.dot(Dir),
       1
     ).a;
   } // End of 'view' function
@@ -558,7 +558,7 @@ export class _mat4 {
       this.a[1][0],
       this.a[2][1],
       this.a[1][2],
-      this.a[2][3],
+      this.a[1][3],
       this.a[2][0],
       this.a[2][1],
       this.a[2][2],

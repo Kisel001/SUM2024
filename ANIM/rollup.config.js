@@ -3,5 +3,7 @@ module.exports = {
   output: {
     dir: "./output",
     format: "iife",
+    name: "Proj",
+    sourcemap: "inline",
   },
 };

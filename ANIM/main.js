@@ -21,7 +21,13 @@ window.addEventListener("load", () => {
     window.requestAnimationFrame(Rendering);
   };
   Rendering();
+  // onClickButton();
 });
+
+export function onClickButton() {
+  const element = document.getElementById("myInput");
+  console.log(element.value);
+}
 
 //window.addEventListener("mousemove", (event) => {
 //  ipgl.onClick(event);
