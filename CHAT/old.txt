@@ -1,0 +1,39 @@
+
+//let counter = 0;
+
+// const requestListener = (req, res) => {
+//   counter += 1;
+//   res.writeHead(200);
+//   res.end(`Hello, number of request was ${counter}`);
+// };
+
+//const requestListener = async (req, res) => {
+//  const contents = await fs.readFile(process.cwd() + "/client/index.html");
+//  res.setHeader("Content-Type", "text/html");
+//  res.writeHead(404);
+//  res.end(contents);
+//};
+
+const requestListener = async (req, res) => {
+  if (req.url == "/") {
+    const contents = await fs.readFile(process.cwd() + "/client/index.html");
+    res.setHeader("Content-Type", "text/html");
+    res.writeHead(200);
+    res.end(contents);
+  } else {
+    if (req.url.endsWith(".js")) {
+      const contents = await fs.readFile(process.cwd() + "/client" + req.url);
+      res.setHeader("Content-Type", "text/javascript");
+      res.writeHead(200);
+      res.end(contents);
+    }
+  }
+};
+
+const host = "localhost";
+const port = 8080;
+const server = http.createServer(requestListener);
+
+server.listen(port, host, () => {
+  console.log(`Server started on http://${host}:${port}#`);
+});
