@@ -43,8 +43,8 @@ export class Render {
 
     this.projSet();
     this.camSet(
-      ipgl.mth.vec3(5, 5, 5),
-      ipgl.mth.vec3(0, 0, 0),
+      ipgl.mth.vec3(14, 15, 13),
+      ipgl.mth.vec3(-10, 2, 3),
       ipgl.mth.vec3(0, 1, 0)
     );
   } // End of constructor

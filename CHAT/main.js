@@ -15,7 +15,7 @@ import { WebSocketServer } from "ws";
 const f = "charbase.txt";
 
 // Array with messages
-let textArr = "<p></p>";
+let textArr = "";
 
 // array with sockets
 let socketsArr = [];
@@ -23,18 +23,15 @@ let socketsArr = [];
 // Write text to file function
 function writeTextFile(fn) {
   fs.writeFile(fn, textArr, "utf8", (err) => {
-    if (err) {
-      console.log("Write file error!");
-    }
+    if (err) console.log("Write file error!");
   });
 } // End of 'writeTextFile' function
 
 // Write text to file function
 function readTextFile(fn) {
   fs.readFile(fn, "utf8", (err, data) => {
-    if (err) {
-      console.log("File not found!");
-    } else textArr = data;
+    if (err) console.log("File not found!");
+    else textArr = data;
   });
 } // End of 'writeTextFile' function
 
@@ -58,11 +55,15 @@ wss.on("connection", (ws) => {
   ws.send(textArr);
 
   ws.on("message", (message) => {
-    if (message.toString() == "<p> (ksc_admin) /clear?password=0x4f3e </p>")
-      textArr = "<p></p>";
-    else textArr = textArr + message.toString();
-    for (let i of socketsArr) i.send(textArr);
-    writeTextFile(f);
+    message = message.toString();
+    if (message[0] == "S" && message[1] == "M") {
+      message = message.substring(2);
+      if (message.toString() == "<p> (ksc_admin) /clear?password=0x4f3e </p>")
+        textArr = "";
+      else textArr = textArr + message.toString();
+      for (let i of socketsArr) i.send(textArr);
+      writeTextFile(f);
+    }
   });
 
   ws.on("close", (srv) => {

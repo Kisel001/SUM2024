@@ -140,11 +140,23 @@ export function AnimInit() {
 
   LOL.autoNormals(VSSS, ISSS, 24, 24);
 
+  let VSDS = [
+    -100, 0, -100, 0, 1, 0,
+
+    -100, 0, 100, 0, 1, 0,
+
+    100, 0, 100, 0, 1, 0,
+
+    100, 0, -100, 0, 1, 0,
+  ];
+
+  let ISDS = [0, 1, 2, 0, 3, 2];
+
   prim4 = new rnd.res.prim.Prim(
     MainAnim.rnd.gl,
     "Trimesh",
-    VSSS,
-    ISSS,
+    VSDS,
+    ISDS,
     MainAnim.rnd.shdprg
   );
 } // End of 'AnimInit' function
@@ -163,7 +175,7 @@ export function AnimRender() {
   m4.translate(ipgl.mth.vec3(1.5, 2, -2));
   m5.rotate(MainAnim.timer.localTime * 50, ipgl.mth.vec3(8, 4, 2));
   m.rotate(MainAnim.timer.localTime * 50, ipgl.mth.vec3(3, 5, 2));
-  m1.translate(ipgl.mth.vec3(-2, 2, -2));
+  m1.translate(ipgl.getyp.getCoordinates());
   m2.rotate(MainAnim.timer.localTime * 50, ipgl.mth.vec3(1, 7, 4));
   let m3 = m2.mul(m1);
   let m6 = m5.mul(m4);
@@ -176,7 +188,7 @@ export function AnimRender() {
   prim1.primDraw(MainAnim.rnd, m6, MainAnim.rnd.shader);
   prim2.primDraw(MainAnim.rnd, m, MainAnim.rnd.shader);
   prim3.primDraw(MainAnim.rnd, m8, MainAnim.rnd.shader);
-  prim4.primDraw(MainAnim.rnd, m10, MainAnim.rnd.shader);
+  prim4.primDraw(MainAnim.rnd, ipgl.mth.mat4(), MainAnim.rnd.shader);
 } // End of 'AnimRender' function
 
 // END OF 'anim.js' FILE

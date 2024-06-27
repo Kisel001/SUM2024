@@ -1,0 +1,21 @@
+/*
+ * main.css
+ *
+ *      Copyright (C) CGSG of PML30. All rights reserved.
+ *
+ * Main styles file.
+ */
+
+/* Body style */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#map {
+  height: 100%;
+}
+
+/* END OF 'main.css' FILE */

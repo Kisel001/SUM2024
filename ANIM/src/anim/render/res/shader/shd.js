@@ -17,6 +17,7 @@ precision highp float;
 out vec4 DrawColor;   
 out vec3 DrawNormal;
 out vec3 DrawPosition; 
+out vec3 SrcPosition;
 
 uniform mat4 MatrWVP;
 uniform mat4 MatrWInv;
@@ -33,6 +34,7 @@ void main( void )
   DrawColor = vec4(1.0, 1.0, 0.0, 1.0);
   DrawNormal = mat3(MatrWInv) * InNormal;
   DrawPosition = vec3(MatrW * vec4(InPosition, 1.0));
+  SrcPosition = vec3(MatrW * vec4(InPosition, 1.0));
 }
 `;
 
@@ -44,6 +46,7 @@ precision highp float;
 in vec4 DrawColor;   
 in vec3 DrawNormal;
 in vec3 DrawPosition; 
+in vec3 SrcPosition;
 
 out vec4 OutColor;
 
@@ -64,17 +67,30 @@ void main( void )
   //color += vec3(0.2f) * max(0.01f, pow(dot(R, L), 10.0f));
 
   //OutColor = vec4(color, 1.0f);
-  OutColor = vec4(N, 1.0);
+  if (SrcPosition.y >= -0.01 || SrcPosition.y <= 0.01)
+    OutColor = vec4(1.0, 0.0, 0.0, 1.0);
+  else
+    OutColor = vec4(N, 1.0);
 }
 #endif
 void main( void )
 {
-  vec3 L = vec3(2, 1, 3);
+  vec3 L = vec3(2, 5, 0);
   vec3 N = normalize(faceforward(DrawNormal, -L, DrawNormal));
 
+  vec3 color;
+
   float k = dot(N, normalize(L));
-  vec3 color = vec3(1.0, 0.829, 0.829) * 0.2;
-  color += vec3(1.0, 0.829, 0.829) * k * 0.8;
+  if (SrcPosition.y >= -0.01 && SrcPosition.y <= 0.01) 
+  {
+    color = vec3(0.5, 0.5, 0.0) * 0.2;
+    color += vec3(0.5, 0.5, 0.0) * k * 0.8;
+  }
+  else 
+  {
+    color = vec3(1.0, 0.829, 0.829) * 0.2;
+    color += vec3(1.0, 0.829, 0.829) * k * 0.8;
+  }
   OutColor = vec4(color, 1.0);
 }
 `;

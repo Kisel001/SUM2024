@@ -11,14 +11,8 @@ let socket = null,
   initSocket = false;
 let elem = document.getElementById("users text");
 
-// Set interval for getting data
-//setInterval(async () => {
-// const response = await fetch("/getSecretData");
-//  const text = await response.text();
-
-//const elem = document.getElementById("users text");
-//elem.innerHTML = text;
-//}, 1000);
+// Set event to load page
+window.addEventListener("load", () => {});
 
 // Initialize communication function
 function initializeCommunication() {
@@ -47,6 +41,13 @@ function inputKeyUp(event) {
   }
 }
 
+// Clicking key event processing function
+function inputKeyUp1(event) {
+  if (event.key === "Enter") {
+    document.getElementById("myButton1").click();
+  }
+}
+
 // Button click processing function
 function onClickButton() {
   if (initSocket == true) {
@@ -54,7 +55,20 @@ function onClickButton() {
     if (element.value == "") return;
     let name = document.getElementById("myName").value;
     if (name == "") name = "Anonymous";
-    const text = "<p> (" + name + ") " + element.value + " </p>";
+    const text = "SM<p> (" + name + ") " + element.value + " </p>";
+    element.value = "";
+    socket.send(text);
+  }
+} // End of 'onClickButton' function
+
+// Button click processing function
+function onClickButton1() {
+  if (initSocket == true) {
+    let element = document.getElementById("myImage");
+    if (element.value == "") return;
+    let name = document.getElementById("myName").value;
+    if (name == "") name = "Anonymous";
+    const text = "SM<p> (" + name + `) <img src="` + element.value + `" </p>`;
     element.value = "";
     socket.send(text);
   }

@@ -57,6 +57,9 @@
   "C_Cpp_Runner.useLinkTimeOptimization": false,
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
   "files.associations": {
-    "BST.C": "cpp"
+    "windows.h": "c",
+    "windef.h": "c",
+    "xmmintrin.h": "c",
+    "mmintrin.h": "c"
   }
 }
